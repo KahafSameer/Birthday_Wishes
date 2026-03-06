@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday MISS!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS STYLING --- */
+        :root {
+            --primary-purple: #ff4b6e; /* romantic rose pink */
+            --primary-blue: #ff758c;   /* soft coral pink */
+        }
+
+        /* STRICT RESET TO STOP SHAKING */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
+            overflow-x: hidden !important; /* Forces no horizontal scroll */
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            /* FULL BACKGROUND IMAGE WITH ROMANTIC OVERLAY */
+            background: linear-gradient(135deg, rgba(255, 105, 135, 0.6), rgba(255, 143, 178, 0.8)), 
+                        url('gojo.jpg') no-repeat center center fixed; 
+            background-size: cover;
+
+            color: #ffeef4;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Dark Overlay */
+        body::before {
+            content: "";
+            position: fixed; /* Fixed to prevent moving */
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at top left, rgba(255, 182, 193, 0.7), transparent 60%),
+                        radial-gradient(circle at bottom right, rgba(255, 99, 132, 0.6), transparent 60%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- BACKGROUND HEARTS --- */
+        .bg-heart {
+            position: fixed; /* Changed to fixed */
+            top: 110vh;
+            background: rgba(255, 192, 203, 0.9);
+            width: 20px;
+            height: 20px;
+            transform: rotate(45deg);
+            animation: floatUp 8s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .bg-heart::before, .bg-heart::after {
+            content: ""; position: absolute; width: 20px; height: 20px;
+            background: inherit; border-radius: 50%;
+        }
+        .bg-heart::before { top: -10px; left: 0; }
+        .bg-heart::after { left: -10px; top: 0; }
+
+        @keyframes floatUp {
+            0% { top: 110vh; opacity: 1; transform: rotate(45deg) translateX(0); }
+            100% { top: -10vh; opacity: 0; transform: rotate(45deg) translateX(20px); } /* Reduced X movement */
+        }
+
+        /* --- SCREEN STYLES --- */
+        .screen {
+            display: none;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            box-sizing: border-box;
+            margin: 20px 0;
+            z-index: 10;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* --- SCREEN 1 --- */
+        #screen1 {
+            background: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-top: 150px;
+        }
+
+        .special-text {
+            color: #FFD700; 
+            font-weight: 700;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+        }
+
+        /* --- SCREEN 2 --- */
+        #screen2 {
+            background: linear-gradient(rgba(255, 105, 135, 0.85), rgba(255, 0, 102, 0.85)), url('dona-bg.jpg') no-repeat center center;
+            background-size: cover;
+            color: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        #screen2 h2 { color: #ffe6f0; text-shadow: 0 2px 5px rgba(255, 0, 102, 0.7); }
+        #screen2 p { color: #fff; }
+
+        /* --- SCREEN 3 --- */
+        #screen3 {
+            background: rgba(255, 245, 247, 0.98);
+            color: #5a2734;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        #screen3 h2 { color: var(--primary-purple); }
+        
+        .message-content {
+            max-height: 350px;
+            overflow-y: auto;
+            text-align: left;
+            padding: 10px;
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: #5a2734;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+        }
+        .message-content::-webkit-scrollbar { width: 5px; }
+        .message-content::-webkit-scrollbar-thumb { background: var(--primary-purple); border-radius: 10px; }
+
+        /* Menu Image */
+        .image-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .menu-circle {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #ffe6f0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+
+        .menu-circle:hover { transform: scale(1.1); border-color: #FFD700; }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.8em;
+            background: linear-gradient(to right, #ffe6f0, #ff9aa2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 0px 5px rgba(142, 45, 226, 0.8));
+            margin-bottom: 10px;
+            margin-top: 0;
+        }
+        
+        p { font-size: 1.2em; font-weight: 600; text-shadow: 0 2px 4px rgba(160, 38, 71, 0.4); }
+
+        /* Buttons Styling */
+        button {
+            background: linear-gradient(45deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover { transform: translateY(-3px); }
+
+        button.btn-active {
+            background: linear-gradient(45deg, #ffdde1, #ee9ca7) !important;
+            color: #5a2734 !important;
+            transform: scale(0.98);
+        }
+
+        #yesBtn {
+            background: linear-gradient(45deg, #ff0844, #ffb199); 
+            box-shadow: 0 0 20px rgba(255, 105, 135, 0.8);
+            animation: pulseBtn 1.5s infinite;
+        }
+
+        #noBtn { background: #ffccd5; color: #b0233c; }
+
+        @keyframes pulseBtn {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .back-btn {
+            background: #ffe6f0 !important;
+            border: 2px solid var(--primary-purple) !important;
+            color: var(--primary-purple) !important;
+            padding: 5px 15px;
+            font-size: 0.8em;
+            position: absolute;
+            top: 20px; left: 20px;
+        }
+
+        .warning-box {
+            background-color: rgba(255, 230, 240, 0.95);
+            border: 1px dashed #ff3366;
+            color: #b0233c;
+            padding: 5px 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.8em;
+            font-weight: 700;
+            display: inline-block;
+            text-shadow: none;
+        }
+
+        .menu-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .menu-buttons { grid-template-columns: 1fr; }
+            button { width: 100%; margin: 5px 0; }
+            h1 { font-size: 2.2em; }
+            .menu-circle { width: 100px; height: 100px; }
+        }
+
+        .video-container {
+            display: none;
+            margin-top: 15px;
+            border-radius: 15px;
+            overflow: hidden;
+            width: 100%;
+            border: 4px solid white;
+        }
+        video { width: 100%; display: block; }
+
+        .heart-frame {
+            width: 100px; height: 100px; margin: 0 auto 10px auto;
+            position: relative; border-radius: 50%; border: 4px solid white;
+            overflow: hidden; animation: pulseHeart 2s infinite;
+        }
+        .heart-frame img { width: 100%; height: 100%; object-fit: cover; }
+        @keyframes pulseHeart { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.05);} }
+
+        #cakeOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top, rgba(255, 192, 203, 0.25), rgba(0,0,0,0.85)); z-index: 999;
+            display: none; flex-direction: column; justify-content: center; align-items: center;
+        }
+        #cakeContainer { position: relative; width: 85%; max-width: 350px; }
+        #theCake, #cakePieceImg { width: 100%; border-radius: 15px; cursor: pointer; border: 3px solid #ffe6f0; }
+        .instruction { color: #ffe6f0; font-size: 1.5em; margin-bottom: 30px; font-family: 'Pacifico'; text-align: center; }
+        #eatBtn { display: none; margin-top: 30px; background: linear-gradient(45deg, #ffdde1, #ff80ab); color: #5a2734; font-size: 1.3em; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-10px);} }
+
+        /* FIXED: Added max-width to confetti/balloons to stop overflow */
+        .confetti { position: fixed; width: 10px; height: 10px; z-index: 2000; animation: fall 3s ease-out forwards; pointer-events: none; border-radius: 2px; }
+        @keyframes fall { to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+        .balloon { position: fixed; bottom: -100px; width: 50px; height: 70px; border-radius: 50%; z-index: 50; animation: floatUpBalloon 6s ease-in forwards; box-shadow: 0 8px 15px rgba(0,0,0,0.2); }
+        @keyframes floatUpBalloon { to { transform: translateY(-120vh); opacity: 0; } }
+
+    </style>
+</head>
+<body>
+
+    <audio id="birthdayAudio" src="birthday.mp3" preload="auto"></audio>
+    <div id="heartContainer"></div>
+
+    <div id="cakeOverlay">
+        <div class="instruction" id="cutInstruction">Touch 3 times to cut! 🎂</div>
+        <div id="cakeContainer">
+            <img id="theCake" src="CAKE.jpg" alt="Tasty Cake">
+            <img id="cakePieceImg" src="CAKE-PIECE.jpg" alt="Cake Piece" style="display: none;">
+        </div>
+        <button id="eatBtn" onclick="eatCake()">Eat a Piece 🍰</button>
+        <button onclick="closeCakeOverlay()" style="margin-top: 20px; z-index: 1001; cursor: pointer; background: white; color: #333;">Close X</button>
+    </div>
+
+    <div id="screen1" class="screen active">
+        
+        <h1>Happy Birthday MADAM!</h1>
+        <p class="special-text">I have made something super special just for you!</p>
+        <p style="font-weight: bold; font-size: 1.3em; margin: 15px 0;">Do you wanna see it?</p>
+        
+        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+            <button id="yesBtn">Yes! &#10084;</button>
+            <button id="noBtn">No</button>
+        </div>
+
+        <div class="warning-box">
+            &#9888; Note: The 'No' button is shy &#128563;. Don't irritate plz &#128525;
+        </div>
+    </div>
+
+    <div id="screen2" class="screen">
+        <button class="back-btn" onclick="goToScreen('screen1')">&#8592; Back</button>
+        
+        <div class="image-row">
+            <img src="girl2.png" alt="Pic 1" class="menu-circle">
+        </div>
+
+        <h2>&#127881; HAPPY BIRTHDAY DEAR Madam &#127881;</h2>
+        
+        <div class="menu-buttons">
+            <button id="playMusicBtn" onclick="toggleMusic()">&#127925; Play Music</button>
+            <button id="playVideoBtn" onclick="toggleVideo()">&#127909; Play Video</button>
+            <button id="flyBalloonsBtn">&#127888; Balloons</button>
+            <button id="decorateBtn">&#127880; Decorate</button>
+            <button id="cutCakeBtn" style="grid-column: span 2;">&#127874; Let's Cut Cake</button>
+            <button id="messageBtn" style="grid-column: span 2;">&#128140; Read Message</button>
+        </div>
+
+        <div class="video-container" id="videoContainer">
+            <video controls id="mainVideo">
+                <source src="bithday video.mp4" type="video/mp4">
+                Your browser does not support videos.
+            </video>
+        </div>
+    </div>
+
+    <div id="screen3" class="screen">
+        <button class="back-btn" onclick="goToScreen('screen2')">&#8592; Back</button>
+        
+        <div class="heart-frame">
+            <img src="her-pic.png" alt="MADAM">
+        </div>
+
+        <h2 style="font-family: 'Pacifico'; font-size: 1.8em;">Dear Madam jii,</h2>
+        
+        <div class="message-content">
+            <p style="color: var(--primary-purple); font-weight: bold; text-align: center;">
+                May Allah Bless You With All The Happiness. <br> 
+                ALLAH PROTECT YOU FROM WORRIES AND FILL YOUR HEART WITH PEACE.
+            </p>
+            <br>
+            <p style="text-align: center; font-weight: bold; font-size: 1.4em; color: var(--primary-purple); margin-top: 20px;">
+                ENJOY YOUR DAY &#10024;
+            </p>
+            
+            <p style="text-align: center; font-weight: bold; font-size: 1.5em; color: #FFD700; margin-top: 10px; text-shadow: 1px 1px 2px black;">
+                Happy Birthday Dear Madam! &#10084;
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('birthdayAudio');
+        const videoContainer = document.getElementById('videoContainer');
+        const video = document.getElementById('mainVideo');
+        const musicBtn = document.getElementById('playMusicBtn');
+        const videoBtn = document.getElementById('playVideoBtn');
+
+        // FIXED: Reduced random range to 90vw to prevent horizontal scroll
+        function createHeart() {
+            const h = document.createElement('div');
+            h.classList.add('bg-heart');
+            h.style.left = Math.random() * 90 + "vw"; 
+            document.getElementById('heartContainer').appendChild(h);
+            setTimeout(() => h.remove(), 8000);
+        }
+        setInterval(createHeart, 600);
+
+        function goToScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            if(screenId !== 'screen2') {
+                resetAllStates(); 
+            }
+        }
+        document.getElementById('yesBtn').addEventListener('click', () => goToScreen('screen2'));
+        document.getElementById('messageBtn').addEventListener('click', () => goToScreen('screen3'));
+
+        function resetAllStates() {
+            audio.pause();
+            musicBtn.innerHTML = "&#127925; Play Music";
+            musicBtn.classList.remove('btn-active');
+            video.pause();
+            videoContainer.style.display = 'none';
+            videoBtn.classList.remove('btn-active');
+        }
+
+        function toggleMusic() {
+            if(audio.paused) {
+                video.pause();
+                videoContainer.style.display = 'none';
+                videoBtn.classList.remove('btn-active');
+                audio.play();
+                musicBtn.innerHTML = "Pause Music &#10074;&#10074;";
+                musicBtn.classList.add('btn-active');
+            } else {
+                audio.pause();
+                musicBtn.innerHTML = "&#127925; Play Music";
+                musicBtn.classList.remove('btn-active');
+            }
+        }
+
+        function toggleVideo() {
+            if (videoContainer.style.display === 'none' || videoContainer.style.display === '') {
+                audio.pause();
+                musicBtn.innerHTML = "&#127925; Play Music";
+                musicBtn.classList.remove('btn-active');
+                videoContainer.style.display = 'block';
+                video.play();
+                videoBtn.classList.add('btn-active');
+            } else {
+                videoContainer.style.display = 'none';
+                video.pause();
+                videoBtn.classList.remove('btn-active');
+            }
+        }
+
+        // FIXED: Reduced random range for confetti
+        document.getElementById('decorateBtn').addEventListener('click', function() {
+            this.classList.add('btn-active');
+            setTimeout(() => this.classList.remove('btn-active'), 500);
+            for(let i=0; i<60; i++) createConfetti();
+        });
+
+        document.getElementById('flyBalloonsBtn').addEventListener('click', function() {
+            this.classList.add('btn-active');
+            setTimeout(() => this.classList.remove('btn-active'), 500);
+            for(let i=0; i<15; i++) createBalloon();
+        });
+
+        const noBtn = document.getElementById('noBtn');
+        const runAway = () => {
+            const screen = document.getElementById('screen1');
+            const rect = screen.getBoundingClientRect();
+            
+            // Reduced boundary to keep button inside
+            const x = Math.random() * (rect.width - 120);
+            const y = Math.random() * (rect.height - 60);
+            noBtn.style.position = 'absolute'; 
+            noBtn.style.left = x + 'px'; 
+            noBtn.style.top = y + 'px';
+
+            const r = Math.floor(Math.random() * 255);
+            const g = Math.floor(Math.random() * 255);
+            const b = Math.floor(Math.random() * 255);
+            
+            noBtn.style.background = `rgb(${r},${g},${b})`;
+            noBtn.style.boxShadow = `0 4px 10px rgba(${r},${g},${b}, 0.5)`;
+        };
+        noBtn.addEventListener('mouseover', runAway); 
+        noBtn.addEventListener('click', runAway);
+
+        const overlay = document.getElementById('cakeOverlay');
+        const cakeImg = document.getElementById('theCake');
+        const pieceImg = document.getElementById('cakePieceImg');
+        const instruction = document.getElementById('cutInstruction');
+        const eatBtn = document.getElementById('eatBtn');
+        let isCakeCut = false;
+        let clickCount = 0;
+
+        document.getElementById('cutCakeBtn').addEventListener('click', () => {
+            resetAllStates();
+            overlay.style.display = 'flex';
+            cakeImg.style.display = 'block';
+            pieceImg.style.display = 'none';
+            eatBtn.style.display = 'none';
+            cakeImg.src = "CAKE.jpg";
+            isCakeCut = false;
+            clickCount = 0;
+            instruction.innerText = "Touch 3 times to cut! 🎂";
+        });
+
+        function closeCakeOverlay() { overlay.style.display = 'none'; }
+
+        cakeImg.addEventListener('click', () => {
+            if (isCakeCut) return; 
+            clickCount++;
+            cakeImg.style.transform = "scale(0.95) rotate(3deg)";
+            setTimeout(() => { cakeImg.style.transform = "scale(1) rotate(0deg)"; }, 100);
+
+            if (clickCount < 3) {
+                instruction.innerText = `${3 - clickCount} more tap${3 - clickCount > 1 ? 's' : ''}...`;
+            } else {
+                isCakeCut = true;
+                cakeImg.src = "CAKE-CUT.jpg";
+                instruction.innerText = "YAY! Happy Birthday! 🎉";
+                audio.play(); 
+                for(let i=0; i<100; i++) createConfetti();
+                eatBtn.style.display = 'block';
+            }
+        });
+
+        function eatCake() {
+            cakeImg.style.display = 'none';
+            pieceImg.style.display = 'block';
+            eatBtn.style.display = 'none';
+            instruction.innerText = "Yummy! 😋";
+            for(let i=0; i<50; i++) createConfetti();
+        }
+
+        // FIXED: Confetti spawn range restricted to 90vw
+        function createConfetti() {
+            const c = document.createElement('div');
+            c.classList.add('confetti');
+            c.style.left = Math.random() * 90 + 'vw';
+            c.style.top = '-10px';
+            const colors = ['#ff4b6e', '#ff758c', '#ffc1cc', '#ff9aa2'];
+            c.style.background = colors[Math.floor(Math.random() * colors.length)];
+            c.style.animationDuration = Math.random() * 2 + 2 + 's';
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 4000);
+        }
+
+        function createBalloon() {
+            const b = document.createElement('div');
+            b.classList.add('balloon');
+            b.style.left = Math.random() * 90 + '%';
+            const colors = ['#ff4b6e', '#ff758c', '#ffc1cc'];
+            b.style.background = colors[Math.floor(Math.random() * colors.length)];
+            document.body.appendChild(b);
+            setTimeout(() => b.remove(), 6000);
+        }
+    </script>
+</body>
+</html>
